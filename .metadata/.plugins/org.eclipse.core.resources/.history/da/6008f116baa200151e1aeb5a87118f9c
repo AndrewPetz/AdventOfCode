@@ -1,0 +1,57 @@
+package day2;
+
+public class Box {
+	
+	public String line;
+	public int length;
+	public int width;
+	public int height;
+	
+	public Box(String line) {
+		this.length = getLength(line);
+		this.width = getWidth(line);
+		this.height = getHeight(line);
+		System.out.println(this.length + ", " + this.width + ", " + this.height);
+	}
+	
+	public int getWrappingPaper() {
+		// 2*l*w + 2*w*h + 2*h*l
+		return ((2*length*width) + (2*width*height) + (2*height*length) + getSmallestSideArea());
+	}
+	
+	private int getSmallestSideArea() {
+		int smallest = Math.min(length, Math.min(width, height));
+		int largest = Math.max(length, Math.max(width, height));
+		int secondSmallest = 0;
+		
+		if(length != smallest && length != largest) {
+			secondSmallest = length;
+		} else if(width != smallest && width != largest) {
+			secondSmallest = width;
+		} else if(height != smallest && height != largest) {
+			secondSmallest = height;
+		} else {
+			System.out.println("Something's screwed up! Fix it!");
+		}
+		
+		return smallest*secondSmallest;
+	}
+	
+	private int getLength(String line) {
+		String[] lwh = line.split("x");
+		int w = Integer.parseInt(lwh[0]);
+		return w;
+	}
+	
+	private int getWidth(String line) {
+		String[] lwh = line.split("x");
+		int w = Integer.parseInt(lwh[1]);
+		return w;
+	}
+	
+	private int getHeight(String line) {
+		String[] lwh = line.split("x");
+		int w = Integer.parseInt(lwh[2]);
+		return w;
+	}
+}

@@ -1,0 +1,19 @@
+package day4;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class Day_04_01 {
+
+	public static void main(String[] args) {
+		// input: ckczppom
+		
+		try {
+			MessageDigest m = MessageDigest.getInstance("MD5");
+			System.out.println(m.toString());
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

@@ -1,0 +1,20 @@
+package day2;
+
+public class Box {
+	
+	public String line;
+	public int length;
+	public int width;
+	public int height;
+	
+	public Box(String line) {
+		this.width = getWidth(line);
+		System.out.println(width);
+	}
+	
+	private int getWidth(String line) {
+		String[] lwh = line.split("x");
+		int w = Integer.parseInt(lwh[0]);
+		return w;
+	}
+}

@@ -1,0 +1,29 @@
+package day3;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Day_03_01 {
+
+	public static void main(String[] args) {
+		File file = null;
+		BufferedReader br;
+		try {
+			// Go through lines and separate them
+			file = new File("src/day3/input.txt");
+			br = new BufferedReader(new FileReader(file));
+			String line = null;  
+			while ((line = br.readLine()) != null)  
+			{
+				// Do stuff with the lines
+				System.out.println(line);
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
