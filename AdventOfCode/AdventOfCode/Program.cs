@@ -27,17 +27,18 @@ namespace AdventOfCode
 
             //input = "(())";
 
-            foreach(char c in input)
+            foreach (char c in input)
             {
                 pos++;
-                if(Equals(c, '('))
+                if (Equals(c, '('))
                 {
                     retVaL++;
-                } else if(Equals(c, ')'))
+                }
+                else if (Equals(c, ')'))
                 {
                     retVaL--;
                 }
-                if(retVaL == -1)
+                if (retVaL == -1)
                 {
                     Console.WriteLine("retVaL -1 at " + pos);
                 }
@@ -93,13 +94,13 @@ namespace AdventOfCode
             string input = GetSimpleInput(3);
             int mapSize = 1000;
             int startingPoint = mapSize / 2;
-            int[,] map = new int[mapSize,mapSize];
+            int[,] map = new int[mapSize, mapSize];
 
             //input = ">";
             //input = "^>v<";
             //input = "^v^v^v^v^v";
 
-            map[startingPoint,startingPoint] = 2;
+            map[startingPoint, startingPoint] = 2;
 
             int santaX = startingPoint;
             int santaY = startingPoint;
@@ -111,11 +112,12 @@ namespace AdventOfCode
             {
                 if (Equals(c, '^'))
                 {
-                    if(step % 2 == 0)
+                    if (step % 2 == 0)
                     {
                         roboY++;
                         map[roboX, roboY]++;
-                    } else
+                    }
+                    else
                     {
                         santaY++;
                         map[santaX, santaY]++;
@@ -163,11 +165,11 @@ namespace AdventOfCode
                 step++;
             }
 
-            for(int k = 0; k < mapSize; k++)
+            for (int k = 0; k < mapSize; k++)
             {
-                for(int l = 0; l < mapSize; l++)
+                for (int l = 0; l < mapSize; l++)
                 {
-                    if(map[k,l] > 0)
+                    if (map[k, l] > 0)
                     {
                         retVal++;
                     }
@@ -190,21 +192,41 @@ namespace AdventOfCode
                 retVal++;
                 md5Input = input + retVal;
                 hash = CalculateMD5Hash(md5Input);
-                if(hash.IndexOf("000000") == 0)
+                if (hash.IndexOf("000000") == 0)
                 {
                     finished = true;
                 }
             }
-            
+
             return retVal;
         }
 
         private static int Day5()
         {
-            int retVal = 0;
+            string filepath = Directory.GetCurrentDirectory() + "/Inputs/day5.txt";
+            var strings = File.ReadAllLines(filepath);
+            char[] vowels = { 'a', 'e', 'i', 'o', 'u' };
+            var alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 
+            HashSet<string> includes = new HashSet<string>();
 
-            return retVal;
+            foreach (var s in strings)
+            {
+                int vowelCount = s.Count(c => vowels.Contains(c));
+
+                if (vowelCount < 3)
+                    continue;
+
+                foreach (var c in alphabet.Where(c => s.Contains($"{c}{c}")))
+                    includes.Add(s);
+            }
+
+            HashSet<string> niceStrings = new HashSet<string>(includes);
+            string[] badStrings = { "ab", "cd", "pq", "xy" };
+            foreach (var s in from s in includes from b in badStrings.Where(s.Contains) select s)
+                niceStrings.Remove(s);
+
+            return niceStrings.Count;
         }
 
         private static string GetSimpleInput(int day)
