@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,10 @@ namespace AdventOfCode
         static void Main(string[] args)
         {
             //Day1();
-            Day2();
+            //Day2();
+            //Day3();
+            //Day4();
+            Day5();
         }
 
         private static int Day1()
@@ -85,14 +89,122 @@ namespace AdventOfCode
 
         private static int Day3()
         {
-            int retVaL = 0;
+            int retVal = 0;
             string input = GetSimpleInput(3);
+            int mapSize = 1000;
+            int startingPoint = mapSize / 2;
+            int[,] map = new int[mapSize,mapSize];
 
-            //input = "(())";
+            //input = ">";
+            //input = "^>v<";
+            //input = "^v^v^v^v^v";
 
+            map[startingPoint,startingPoint] = 2;
+
+            int santaX = startingPoint;
+            int santaY = startingPoint;
+            int roboX = startingPoint;
+            int roboY = startingPoint;
+            int step = 1;
+
+            foreach (char c in input)
+            {
+                if (Equals(c, '^'))
+                {
+                    if(step % 2 == 0)
+                    {
+                        roboY++;
+                        map[roboX, roboY]++;
+                    } else
+                    {
+                        santaY++;
+                        map[santaX, santaY]++;
+                    }
+                }
+                else if (Equals(c, '>'))
+                {
+                    if (step % 2 == 0)
+                    {
+                        roboX++;
+                        map[roboX, roboY]++;
+                    }
+                    else
+                    {
+                        santaX++;
+                        map[santaX, santaY]++;
+                    }
+                }
+                else if (Equals(c, 'v'))
+                {
+                    if (step % 2 == 0)
+                    {
+                        roboY--;
+                        map[roboX, roboY]++;
+                    }
+                    else
+                    {
+                        santaY--;
+                        map[santaX, santaY]++;
+                    }
+                }
+                else if (Equals(c, '<'))
+                {
+                    if (step % 2 == 0)
+                    {
+                        roboX--;
+                        map[roboX, roboY]++;
+                    }
+                    else
+                    {
+                        santaX--;
+                        map[santaX, santaY]++;
+                    }
+                }
+                step++;
+            }
+
+            for(int k = 0; k < mapSize; k++)
+            {
+                for(int l = 0; l < mapSize; l++)
+                {
+                    if(map[k,l] > 0)
+                    {
+                        retVal++;
+                    }
+                }
+            }
+
+            return retVal;
+        }
+
+        private static int Day4()
+        {
+            int retVal = 0;
+            string input = GetSimpleInput(4);
+            bool finished = false;
+            string hash = "";
+            string md5Input = "";
+
+            while (!finished)
+            {
+                retVal++;
+                md5Input = input + retVal;
+                hash = CalculateMD5Hash(md5Input);
+                if(hash.IndexOf("000000") == 0)
+                {
+                    finished = true;
+                }
+            }
             
+            return retVal;
+        }
 
-            return retVaL;
+        private static int Day5()
+        {
+            int retVal = 0;
+
+
+            return retVal;
         }
 
         private static string GetSimpleInput(int day)
@@ -107,6 +219,29 @@ namespace AdventOfCode
             }
 
             return retVal;
+        }
+
+        private static string CalculateMD5Hash(string input)
+
+        {
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            // step 2, convert byte array to hex string
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < hash.Length; i++)
+
+            {
+
+                sb.Append(hash[i].ToString("X2"));
+
+            }
+
+            return sb.ToString();
+
         }
     }
 }
