@@ -83,6 +83,18 @@ namespace AdventOfCode
             return retVal;
         }
 
+        private static int Day3()
+        {
+            int retVaL = 0;
+            string input = GetSimpleInput(3);
+
+            //input = "(())";
+
+            
+
+            return retVaL;
+        }
+
         private static string GetSimpleInput(int day)
         {
             string retVal = "";
