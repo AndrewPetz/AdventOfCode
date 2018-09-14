@@ -229,6 +229,27 @@ namespace AdventOfCode
             return niceStrings.Count;
         }
 
+        private static int Day6()
+        {
+            int retVal = 0;
+            bool[,] lights = new bool[1000, 1000];
+
+            string filepath = Directory.GetCurrentDirectory() + "/Inputs/day6.txt";
+            var strings = File.ReadAllLines(filepath);
+
+            foreach (var s in strings)
+            {
+
+
+                if(s.IndexOf("toggle") > -1)
+                {
+
+                }
+            }
+
+            return retVal;
+        }
+
         private static string GetSimpleInput(int day)
         {
             string retVal = "";
@@ -264,6 +285,39 @@ namespace AdventOfCode
 
             return sb.ToString();
 
+        }
+
+        private void TurnOnLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
+        {
+            for (int i = x1; i < x2; i++)
+            {
+                for(int j = y1; j < y2; j++)
+                {
+                    lights[i, j] = true;
+                }
+            }
+        }
+
+        private void TurnOffLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
+        {
+            for (int i = x1; i < x2; i++)
+            {
+                for (int j = y1; j < y2; j++)
+                {
+                    lights[i, j] = false;
+                }
+            }
+        }
+
+        private void ToggleLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
+        {
+            for (int i = x1; i < x2; i++)
+            {
+                for (int j = y1; j < y2; j++)
+                {
+                    lights[i, j] = !lights[i, j];
+                }
+            }
         }
     }
 }
