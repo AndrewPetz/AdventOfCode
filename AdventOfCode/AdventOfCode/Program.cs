@@ -16,7 +16,8 @@ namespace AdventOfCode
             //Day2();
             //Day3();
             //Day4();
-            Day5();
+            //Day5();
+            Day6();
         }
 
         private static int Day1()
@@ -239,11 +240,44 @@ namespace AdventOfCode
 
             foreach (var s in strings)
             {
+                int x1 = 0;
+                int x2 = 0;
+                int y1 = 0;
+                int y2 = 0;
+                string[] split = s.Split(' ');
 
+                if(split.Length == 5)
+                {
+                    x1 = int.Parse(split[2].Split(',')[0]);
+                    y1 = int.Parse(split[2].Split(',')[1]);
+                    x2 = int.Parse(split[4].Split(',')[0]);
+                    y2 = int.Parse(split[4].Split(',')[1]);
+                } else if(split.Length == 4)
+                {
+                    x1 = int.Parse(split[1].Split(',')[0]);
+                    y1 = int.Parse(split[1].Split(',')[1]);
+                    x2 = int.Parse(split[3].Split(',')[0]);
+                    y2 = int.Parse(split[3].Split(',')[1]);
+                }
 
                 if(s.IndexOf("toggle") > -1)
                 {
+                    ToggleLights(ref lights, x1, x2, y1, y2);
+                } else if(s.IndexOf("turn on") > -1)
+                {
+                    TurnOnLights(ref lights, x1, x2, y1, y2);
+                } else if(s.IndexOf("turn off") > -1)
+                {
+                    TurnOffLights(ref lights, x1, x2, y1, y2);
+                }
+            }
 
+            // count lights lit
+            for(int i = 0; i < 1000; i++)
+            {
+                for(int j = 0; j < 1000; j++)
+                {
+                    if (lights[i, j]) retVal++;
                 }
             }
 
@@ -287,33 +321,33 @@ namespace AdventOfCode
 
         }
 
-        private void TurnOnLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
+        private static void TurnOnLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
         {
-            for (int i = x1; i < x2; i++)
+            for (int i = x1; i <= x2; i++)
             {
-                for(int j = y1; j < y2; j++)
+                for(int j = y1; j <= y2; j++)
                 {
                     lights[i, j] = true;
                 }
             }
         }
 
-        private void TurnOffLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
+        private static void TurnOffLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
         {
-            for (int i = x1; i < x2; i++)
+            for (int i = x1; i <= x2; i++)
             {
-                for (int j = y1; j < y2; j++)
+                for (int j = y1; j <= y2; j++)
                 {
                     lights[i, j] = false;
                 }
             }
         }
 
-        private void ToggleLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
+        private static void ToggleLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
         {
-            for (int i = x1; i < x2; i++)
+            for (int i = x1; i <= x2; i++)
             {
-                for (int j = y1; j < y2; j++)
+                for (int j = y1; j <= y2; j++)
                 {
                     lights[i, j] = !lights[i, j];
                 }
