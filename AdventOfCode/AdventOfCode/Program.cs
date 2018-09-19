@@ -8,19 +8,21 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            //Day1();
-            //Day2();
-            //Day3();
-            //Day4();
-            //Day5();
-            Day6();
+            Program program = new Program();
+
+            //program.Day1();
+            //program.Day2();
+            //program.Day3();
+            //program.Day4();
+            //program.Day5();
+            program.Day6();
         }
 
-        private static int Day1()
+        public int Day1()
         {
             int retVaL = 0;
             string input = GetSimpleInput(1);
@@ -48,7 +50,7 @@ namespace AdventOfCode
             return retVaL;
         }
 
-        private static int Day2()
+        public int Day2()
         {
             int retVal = 0;
             int ribbon = 0;
@@ -89,7 +91,7 @@ namespace AdventOfCode
             return retVal;
         }
 
-        private static int Day3()
+        public int Day3()
         {
             int retVal = 0;
             string input = GetSimpleInput(3);
@@ -180,7 +182,7 @@ namespace AdventOfCode
             return retVal;
         }
 
-        private static int Day4()
+        public int Day4()
         {
             int retVal = 0;
             string input = GetSimpleInput(4);
@@ -202,7 +204,7 @@ namespace AdventOfCode
             return retVal;
         }
 
-        private static int Day5()
+        public int Day5()
         {
             string filepath = Directory.GetCurrentDirectory() + "/Inputs/day5.txt";
             var strings = File.ReadAllLines(filepath);
@@ -230,14 +232,23 @@ namespace AdventOfCode
             return niceStrings.Count;
         }
 
-        private static int Day6()
+        public int Day6(string input = null)
         {
             int retVal = 0;
-            bool[,] lights = new bool[1000, 1000];
+            int[,] lights = new int[1000, 1000];
+            string filepath = "";
+            string[] strings;
 
-            string filepath = Directory.GetCurrentDirectory() + "/Inputs/day6.txt";
-            var strings = File.ReadAllLines(filepath);
-
+            if (string.IsNullOrEmpty(input))
+            {
+                filepath = Directory.GetCurrentDirectory() + "/Inputs/day6.txt";
+                strings = File.ReadAllLines(filepath);
+            } else
+            {
+                strings = new string[1];
+                strings[0] = input;
+            }
+            
             foreach (var s in strings)
             {
                 int x1 = 0;
@@ -277,9 +288,18 @@ namespace AdventOfCode
             {
                 for(int j = 0; j < 1000; j++)
                 {
-                    if (lights[i, j]) retVal++;
+                    retVal += lights[i, j];
                 }
             }
+
+            return retVal;
+        }
+
+        public int Day7()
+        {
+            int retVal = 0;
+
+
 
             return retVal;
         }
@@ -321,35 +341,38 @@ namespace AdventOfCode
 
         }
 
-        private static void TurnOnLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
+        private static void TurnOnLights(ref int[,] lights, int x1, int x2, int y1, int y2)
         {
             for (int i = x1; i <= x2; i++)
             {
                 for(int j = y1; j <= y2; j++)
                 {
-                    lights[i, j] = true;
+                    lights[i, j]++;
                 }
             }
         }
 
-        private static void TurnOffLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
+        private static void TurnOffLights(ref int[,] lights, int x1, int x2, int y1, int y2)
         {
             for (int i = x1; i <= x2; i++)
             {
                 for (int j = y1; j <= y2; j++)
                 {
-                    lights[i, j] = false;
+                    if(lights[i,j] > 0)
+                    {
+                        lights[i, j]--;
+                    }
                 }
             }
         }
 
-        private static void ToggleLights(ref bool[,] lights, int x1, int y1, int x2, int y2)
+        private static void ToggleLights(ref int[,] lights, int x1, int x2, int y1, int y2)
         {
             for (int i = x1; i <= x2; i++)
             {
                 for (int j = y1; j <= y2; j++)
                 {
-                    lights[i, j] = !lights[i, j];
+                    lights[i, j] = lights[i,j] + 2;
                 }
             }
         }
