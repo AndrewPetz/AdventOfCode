@@ -25,7 +25,7 @@ namespace AdventOfCode
         public int Day1()
         {
             int retVaL = 0;
-            string input = GetSimpleInput(1);
+            string input = GetSimpleInput("day1");
             int pos = 0;
 
             //input = "(())";
@@ -94,7 +94,7 @@ namespace AdventOfCode
         public int Day3()
         {
             int retVal = 0;
-            string input = GetSimpleInput(3);
+            string input = GetSimpleInput("day3");
             int mapSize = 1000;
             int startingPoint = mapSize / 2;
             int[,] map = new int[mapSize, mapSize];
@@ -185,7 +185,7 @@ namespace AdventOfCode
         public int Day4()
         {
             int retVal = 0;
-            string input = GetSimpleInput(4);
+            string input = GetSimpleInput("day4");
             bool finished = false;
             string hash = "";
             string md5Input = "";
@@ -295,19 +295,32 @@ namespace AdventOfCode
             return retVal;
         }
 
-        public int Day7()
+        public int Day7(string[] input = null)
         {
             int retVal = 0;
+            Dictionary<string, int> wires = new Dictionary<string, int>();
+            string filepath = "";
+            string[] strings;
+
+            if (input == null)
+            {
+                filepath = Directory.GetCurrentDirectory() + "/Inputs/day7.txt";
+                strings = File.ReadAllLines(filepath);
+            }
+            else
+            {
+                strings = input;
+            }
 
 
 
             return retVal;
         }
 
-        private static string GetSimpleInput(int day)
+        public static string GetSimpleInput(string filename)
         {
             string retVal = "";
-            string filepath = Directory.GetCurrentDirectory() + "/Inputs/day" + day + ".txt";
+            string filepath = Directory.GetCurrentDirectory() + "/Inputs/" + filename + ".txt";
 
             if (File.Exists(filepath))
             {
@@ -318,7 +331,7 @@ namespace AdventOfCode
             return retVal;
         }
 
-        private static string CalculateMD5Hash(string input)
+        public static string CalculateMD5Hash(string input)
 
         {
             MD5 md5 = System.Security.Cryptography.MD5.Create();
@@ -341,7 +354,7 @@ namespace AdventOfCode
 
         }
 
-        private static void TurnOnLights(ref int[,] lights, int x1, int x2, int y1, int y2)
+        public static void TurnOnLights(ref int[,] lights, int x1, int x2, int y1, int y2)
         {
             for (int i = x1; i <= x2; i++)
             {
@@ -352,7 +365,7 @@ namespace AdventOfCode
             }
         }
 
-        private static void TurnOffLights(ref int[,] lights, int x1, int x2, int y1, int y2)
+        public static void TurnOffLights(ref int[,] lights, int x1, int x2, int y1, int y2)
         {
             for (int i = x1; i <= x2; i++)
             {
@@ -366,7 +379,7 @@ namespace AdventOfCode
             }
         }
 
-        private static void ToggleLights(ref int[,] lights, int x1, int x2, int y1, int y2)
+        public static void ToggleLights(ref int[,] lights, int x1, int x2, int y1, int y2)
         {
             for (int i = x1; i <= x2; i++)
             {
