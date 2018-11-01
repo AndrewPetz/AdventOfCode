@@ -10,6 +10,17 @@ namespace AdventOfCode2016
     {
         static void Main(string[] args)
         {
+            List<Action> days = new List<Action> {
+                () => Day01.Run()
+            };
+            for (int i = 0; i < days.Count; i++)
+            {
+                Console.WriteLine("Day " + (i + 1) + ":");
+                days[i].Invoke();
+                Console.WriteLine();
+            }
+            Console.WriteLine("Finished!");
+            Console.ReadKey();
         }
     }
 }
