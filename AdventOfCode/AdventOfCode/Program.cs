@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdventOfCode.Classes;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +20,8 @@ namespace AdventOfCode
             //program.Day3();
             //program.Day4();
             //program.Day5();
-            program.Day6();
+            //program.Day6();
+            program.Day7();
         }
 
         public int Day1()
@@ -312,10 +314,91 @@ namespace AdventOfCode
                 strings = input;
             }
 
+            foreach(var s in strings)
+            {
+                // AND, OR, NOT, LSHIFT, RSHIFT, none
+                if (s.Contains("AND") || s.Contains("OR") || s.Contains("LSHIFT") || s.Contains("RSHIFT"))
+                {
+                    string[] commands = s.Split(' ');
+                    string wire1 = commands[0];
+                    string command = commands[1];
+                    string wire2 = commands[2];
+                    string toWire = commands[4];
+                    // make sure all the wires exist in the dictionary
+                    if (!wires.ContainsKey(wire1))
+                    {
+                        wires.Add(wire1, 0);
+                    }
+                    if (!wires.ContainsKey(wire2))
+                    {
+                        wires.Add(wire2, 0);
+                    }
+                    if (!wires.ContainsKey(toWire))
+                    {
+                        wires.Add(toWire, 0);
+                    }
+                    if (string.Equals(command, "AND", StringComparison.OrdinalIgnoreCase))
+                    {
+                        wires[toWire] = wires[wire1] & wires[wire2];
+                    }
+                    else if (string.Equals(command, "OR", StringComparison.OrdinalIgnoreCase))
+                    {
+                        wires[toWire] = wires[wire1] | wires[wire2];
+                    }
+                    else if (string.Equals(command, "LSHIFT", StringComparison.OrdinalIgnoreCase))
+                    {
+                        wires[toWire] = wires[wire1] << wires[wire2];
+                    }
+                    else if (string.Equals(command, "RSHIFT", StringComparison.OrdinalIgnoreCase))
+                    {
+                        wires[toWire] = wires[wire1] >> wires[wire2];
+                    }
 
+                } else if(s.Contains("NOT"))
+                {
+                    string[] commands = s.Split(' ');
+                    string wire1 = commands[1];
+                    string toWire = commands[3];
+
+                    // make sure all the wires exist in the dictionary
+                    if (!wires.ContainsKey(wire1))
+                    {
+                        wires.Add(wire1, 0);
+                    }
+                    if (!wires.ContainsKey(toWire))
+                    {
+                        wires.Add(toWire, 0);
+                    }
+
+                    wires[toWire] = ~wires[wire1];
+                }
+                else // value goes directly to wire
+                {
+                    string[] commands = s.Split(' ');
+                    string toWire = commands[2];
+
+                    // make sure all the wires exist in the dictionary
+                    if (!wires.ContainsKey(toWire))
+                    {
+                        wires.Add(toWire, 0);
+                    }
+
+                    if (int.TryParse(commands[0], out int value))
+                    {
+                        wires[toWire] = value;
+                    } else
+                    {
+                        wires[toWire] = wires[commands[0]];
+                    }
+                }
+            }
+
+            retVal = wires["a"];
 
             return retVal;
         }
+
+
 
         public static string GetSimpleInput(string filename)
         {
