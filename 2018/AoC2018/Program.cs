@@ -10,8 +10,9 @@ namespace AoC2018
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Day01.Run());
-            Console.ReadLine();
+            //Console.WriteLine(Day01.Run());
+            //Console.ReadLine();
+            Day03.PartOne();
         }
     }
 }
