@@ -33,12 +33,12 @@ namespace Utils
 
                 var response = await client.ExecuteAsync(request);
 
-                string fileName = GetDayFilename(day);
+                var fileName = GetDayFilename(day);
 
                 if (!File.Exists(fileName))
                 {
                     byte[] fileBytes = response.RawBytes;
-                    File.WriteAllBytes(fileName, fileBytes);
+                    await File.WriteAllBytesAsync(fileName, fileBytes);
                 }
 
                 return await ReadFileAsync(day);
@@ -96,7 +96,7 @@ namespace Utils
         public static async Task<List<int>> ReadLinesIntAsync(int day)
         {
             var lines = await ReadLinesAsync(day);
-            return lines.Select(x => int.Parse(x)).ToList();
+            return lines.Select(int.Parse).ToList();
         }
 
         private static string GetDayFilename(int day)
