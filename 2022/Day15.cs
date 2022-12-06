@@ -1,6 +1,6 @@
 ﻿using Utils;
 
-namespace _2015
+namespace _2022
 {
     public class Day15
     {

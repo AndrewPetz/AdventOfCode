@@ -1,12 +1,9 @@
-﻿using Utils;
-
-namespace _2015
+﻿namespace _2022
 {
-    public class Day15
+    public class Day07
     {
         public static async Task Part1()
         {
-            var day1Text = await Files.ReadFileAsync(1);
 
         }
 
