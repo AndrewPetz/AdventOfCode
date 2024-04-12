@@ -9,8 +9,8 @@
 //Console.WriteLine(await Day04.Part2());
 //Console.WriteLine(await Day05.Part1());
 //Console.WriteLine(await Day05.Part2());
-Console.WriteLine(await Day06.Part1());
-//Console.WriteLine(await Day06.Part2());
+//Console.WriteLine(await Day06.Part1());
+Console.WriteLine(await Day06.Part2());
 //Console.WriteLine(await Day07.Part1());
 //Console.WriteLine(await Day07.Part2());
 //Console.WriteLine(await Day08.Part1());

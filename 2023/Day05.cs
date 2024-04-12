@@ -1,4 +1,4 @@
-﻿namespace _2022
+﻿namespace _2023
 {
     public class Day05
     {
