@@ -4,139 +4,79 @@ namespace _2024
 {
     public class Day02
     {
-        private const int rockScore = 1;
-        private const int paperScore = 2;
-        private const int scissorsScore = 3;
-
-        private const int winScore = 6;
-        private const int loseScore = 0;
-        private const int drawScore = 3;
         public static async Task<int> Part1()
         {
             var lines = await Files.ReadLinesAsync(2);
+            var totalSafe = 0;
 
-            var score = 0;
             foreach (var line in lines)
             {
-                var lineSplit = line.Split(' ');
-                var opponent = lineSplit[0];
-                var you = lineSplit[1];
-
-                switch (you)
-                {
-                    case "X": // Rock
-                        score += rockScore;
-                        switch (opponent)
-                        {
-                            case "A": // Rock (tie)
-                                score += drawScore;
-                                break;
-                            case "B": // Paper (loss)
-                                score += loseScore;
-                                break;
-                            case "C": // Scissors (win)
-                                score += winScore;
-                                break;
-                        }
-                        break;
-                    case "Y": // Paper
-                        score += paperScore;
-                        switch (opponent)
-                        {
-                            case "A": // Rock (win)
-                                score += winScore;
-                                break;
-                            case "B": // Paper (tie)
-                                score += drawScore;
-                                break;
-                            case "C": // Scissors (loss)
-                                score += loseScore;
-                                break;
-                        }
-                        break;
-                    case "Z": // Scissors
-                        score += scissorsScore;
-                        switch (opponent)
-                        {
-                            case "A": // Rock (loss)
-                                score += loseScore;
-                                break;
-                            case "B": // Paper (win)
-                                score += winScore;
-                                break;
-                            case "C": // Scissors (tie)
-                                score += drawScore;
-                                break;
-                        }
-                        break;
-                }
+                var lineList = line.Split(' ').ToList();
+                totalSafe += CheckReport(lineList) ? 1 : 0;
             }
 
-            return score;
+            return totalSafe;
         }
 
         public static async Task<int> Part2()
         {
             var lines = await Files.ReadLinesAsync(2);
+            var totalSafe = 0;
 
-            var score = 0;
             foreach (var line in lines)
             {
-                var lineSplit = line.Split(' ');
-                var opponent = lineSplit[0];
-                var you = lineSplit[1];
-
-                switch (you)
+                var lineList = line.Split(' ').ToList();
+                var isSafe = CheckReport(lineList);
+                if (!isSafe)
                 {
-                    case "X": // Lose
-                        score += loseScore;
-                        switch (opponent)
+                    for (var i = 0; i < lineList.Count; i++)
+                    {
+                        var newList = new List<string>(lineList);
+                        newList.RemoveAt(i);
+                        if (CheckReport(newList))
                         {
-                            case "A": // Rock (I play scissors)
-                                score += scissorsScore;
-                                break;
-                            case "B": // Paper (I play rock)
-                                score += rockScore;
-                                break;
-                            case "C": // Scissors (I play paper)
-                                score += paperScore;
-                                break;
+                            isSafe = true;
+                            break;
                         }
-                        break;
-                    case "Y": // Draw
-                        score += drawScore;
-                        switch (opponent)
-                        {
-                            case "A": // Rock (I play rock)
-                                score += rockScore;
-                                break;
-                            case "B": // Paper (I play paper)
-                                score += paperScore;
-                                break;
-                            case "C": // Scissors (I play scissors)
-                                score += scissorsScore;
-                                break;
-                        }
-                        break;
-                    case "Z": // Win
-                        score += winScore; // 6 for win
-                        switch (opponent)
-                        {
-                            case "A": // Rock (I play paper)
-                                score += paperScore;
-                                break;
-                            case "B": // Paper (I play scissors)
-                                score += scissorsScore;
-                                break;
-                            case "C": // Scissors (I play rock)
-                                score += rockScore;
-                                break;
-                        }
-                        break;
+                    }
                 }
+                totalSafe += isSafe ? 1 : 0;
             }
 
-            return score;
+            return totalSafe;
+        }
+
+        private static bool CheckReport(List<string> lineList)
+        {
+            var isSafe = true;
+            var isIncreasing = false;
+            var isDecreasing = false;
+
+            var prev = int.Parse(lineList[0]);
+            for (var i = 1; i < lineList.Count; i++)
+            {
+                var current = int.Parse(lineList[i]);
+                var diff = current - prev;
+                if (diff == 0)
+                {
+                    isSafe = false;
+                    break;
+                }
+                if (Math.Abs(diff) > 3)
+                {
+                    isSafe = false;
+                    break;
+                }
+                if (diff > 0) isIncreasing = true;
+                if (diff < 0) isDecreasing = true;
+                prev = current;
+            }
+            if (isIncreasing && isDecreasing)
+            {
+                isSafe = false;
+            }
+
+            return isSafe;
         }
     }
 }
