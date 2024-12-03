@@ -1,51 +1,57 @@
-﻿using Utils;
+﻿using System.Text.RegularExpressions;
+using Utils;
 
 namespace _2024
 {
     public class Day03
     {
-        private const string AllLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public static async Task<int> Part1()
         {
-            var lines = await Files.ReadLinesAsync(3);
+            var input = await Files.ReadFileAsync(3);
             var total = 0;
-            foreach (var line in lines)
+            var regex = new Regex("mul\\(\\d+\\,\\d+\\)");
+            var matches = regex.Matches(input);
+            foreach (var m in matches.Select(x => x.Value))
             {
-                // split the line in two halves
-                var firstHalf = line[..(line.Length / 2)].ToList();
-                var secondHalf = line.Substring(line.Length / 2, line.Length / 2).ToList();
-
-                var commonLetter = firstHalf.Intersect(secondHalf).ToList();
-
-                total += AllLetters.IndexOf(commonLetter[0]) + 1;
+                var s = m.Replace("mul", "")
+                    .Replace("(", "")
+                    .Replace(")", "");
+                var nums = s.Split(",");
+                total += int.Parse(nums[0]) * int.Parse(nums[1]);
             }
             return total;
         }
 
         public static async Task<int> Part2()
         {
-            var lines = await Files.ReadLinesAsync(3);
+            var input = await Files.ReadFileAsync(3);
             var total = 0;
+            var regex = new Regex("mul\\(\\d+\\,\\d+\\)|do\\(\\)|don't\\(\\)");
+            var matches = regex.Matches(input);
 
-            // get lines in groups of three
-            var groups = GroupLines(lines);
-
-            foreach (var group in groups)
+            var shouldMult = true;
+            foreach (var m in matches.Select(x => x.Value))
             {
-                var list = group.ToList();
-                var commonLetter = list[0].Intersect(list[1].Intersect(list[2])).ToList();
+                if (string.Equals(m, "do()", StringComparison.OrdinalIgnoreCase))
+                {
+                    shouldMult = true;
+                }
+                else if (string.Equals(m, "don't()", StringComparison.OrdinalIgnoreCase))
+                {
+                    shouldMult = false;
+                }
 
-                total += AllLetters.IndexOf(commonLetter[0]) + 1;
+                if (shouldMult && m.Contains("mul"))
+                {
+                    var s = m.Replace("mul", "")
+                        .Replace("(", "")
+                        .Replace(")", "");
+                    var nums = s.Split(",");
+                    total += int.Parse(nums[0]) * int.Parse(nums[1]);
+                }
             }
+
             return total;
-        }
-
-        private static IEnumerable<IEnumerable<string>> GroupLines(IReadOnlyList<string> lines)
-        {
-            for (var i = 0; i < lines.Count; i += 3)
-            {
-                yield return new[] { lines[i], lines[i + 1], lines[i + 2] };
-            }
         }
     }
 }
